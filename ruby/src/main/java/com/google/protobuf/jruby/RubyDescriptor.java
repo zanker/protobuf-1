@@ -248,10 +248,10 @@ public class RubyDescriptor extends RubyObject {
         klass.setAllocator(allocator);
         klass.makeMetaClass(runtime.getObject().getMetaClass());
         klass.inherit(runtime.getObject());
+        klass.defineAnnotatedMethods(RubyMessage.class);
         RubyModule messageExts = runtime.getClassFromPath("Google::Protobuf::MessageExts");
         klass.include(new IRubyObject[] {messageExts});
         klass.instance_variable_set(runtime.newString(Utils.DESCRIPTOR_INSTANCE_VAR), this);
-        klass.defineAnnotatedMethods(RubyMessage.class);
         return klass;
     }
 

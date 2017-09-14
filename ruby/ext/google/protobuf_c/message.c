@@ -504,10 +504,6 @@ VALUE build_class_from_descriptor(Descriptor* desc) {
   rb_ivar_set(klass, descriptor_instancevar_interned,
               get_def_obj(desc->msgdef));
   rb_define_alloc_func(klass, Message_alloc);
-  rb_require("google/protobuf/message_exts");
-  rb_include_module(klass, rb_eval_string("Google::Protobuf::MessageExts"));
-  rb_extend_object(
-      klass, rb_eval_string("Google::Protobuf::MessageExts::ClassMethods"));
 
   rb_define_method(klass, "method_missing",
                    Message_method_missing, -1);
@@ -529,6 +525,11 @@ VALUE build_class_from_descriptor(Descriptor* desc) {
   rb_define_singleton_method(klass, "decode_json", Message_decode_json, 1);
   rb_define_singleton_method(klass, "encode_json", Message_encode_json, -1);
   rb_define_singleton_method(klass, "descriptor", Message_descriptor, 0);
+
+  rb_require("google/protobuf/message_exts");
+  rb_include_module(klass, rb_eval_string("Google::Protobuf::MessageExts"));
+  rb_extend_object(
+      klass, rb_eval_string("Google::Protobuf::MessageExts::ClassMethods"));
 
   return klass;
 }
